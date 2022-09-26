@@ -1,5 +1,7 @@
+import { appRoutes } from "./applicant";
 
 const routes = [
+  ...appRoutes,
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
