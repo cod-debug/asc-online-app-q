@@ -1,0 +1,58 @@
+// app global css in SCSS form
+.navbar-logo {
+    height: 3em;
+}
+
+.q-toolbar__title.ellipsis {
+  padding-top: 8px;
+}
+
+body {
+  background: url("~assets/images/login-bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.q-carousel {
+  background-color: #fff;
+  height: 70vh;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.footer  {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+.footer .footer-links a {
+    color: black;
+    margin-left: 20px;
+    font-weight: bolder;
+}
+
+.login-form {
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.forgot-password-btn{
+    color: black;
+    opacity: .8;
+    text-decoration: none;
+}
+
+.forgot-password-btn:hover {
+    opacity: 1;
+}
+
+.flex-items-center {
+  height:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
