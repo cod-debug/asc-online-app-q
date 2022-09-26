@@ -1,6 +1,6 @@
 <template>
     <div class="q-pa-md q-ml-lg">
-      <div class="row">
+      <div class="row q-mb-lg">
         <div class="col-12 col-md-8">
           <app-carousel />
         </div>
