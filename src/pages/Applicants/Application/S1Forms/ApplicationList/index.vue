@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px 8px;">
+  <div>
     <!-- in this part is to check which components to load -->
 
     <!-- if user logged === admin, render component below -->
@@ -16,6 +16,5 @@
     components: {
       ApplicationList
     }
-
   }
 </script>

@@ -15,8 +15,12 @@
           <hr class="nav-hr" />
         </div>
 
-        <AdminDrawer v-if="userRole === userRoles[0]" />
-        <ApplicantDrawer v-else-if="userRole === userRoles[1]" />
+        <AdminDrawer v-if="userRole === userRoles[0]"
+          :miniState.sync="miniState"
+        />
+        <ApplicantDrawer v-else-if="userRole === userRoles[1]"
+          :miniState.sync="miniState"
+        />
 
         <div>
           <hr class="nav-hr" />
@@ -70,7 +74,7 @@
         "Admin",
         "Applicant",
       ],
-      userRole: "Admin"
+      userRole: "Applicant"
 
     }),
     watch: {
