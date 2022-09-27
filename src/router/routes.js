@@ -1,5 +1,29 @@
+import { appRoutes } from "./applicant";
+import {
+  reportRoutes,
+  maintenanceRoutes,
+  companyRoutes,
+} from "./admin";
 
 const routes = [
+  {
+    path: '/asc/page',
+    component: () => import('layouts/ApplicantLayout.vue'),
+    children: [
+      /**
+       * From Applicant routes
+       */
+      ...appRoutes,
+      /**
+       * From Admin routes
+       */
+      ...maintenanceRoutes,
+      ...reportRoutes,
+      ...maintenanceRoutes,
+      ...companyRoutes,
+    ]
+  },
+
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),

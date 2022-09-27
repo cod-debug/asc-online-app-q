@@ -15,7 +15,8 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "vue-fragment": "1.6.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
