@@ -1,3 +1,17 @@
 <template>
-  <h1>Announcement List</h1>
+  <div>
+
+    <Announcement />
+
+  </div>
 </template>
+
+<script>
+  import Announcement from "components/Applicant/Announcement";
+  export default {
+    components: {
+      Announcement
+    }
+
+  }
+</script>

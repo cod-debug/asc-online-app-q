@@ -7,6 +7,8 @@
         expand-separator
         :icon="item.icon"
         :label="item.label"
+        @show="expandItem(true)"
+        @hide="expandItem(false)"
         v-if="item.children && item.children.length > 0"
       >
         <q-item clickable v-ripple class="nav-item-child"
@@ -46,6 +48,7 @@
 </template>
 <script>
 export default {
+  props: ['miniState'],
   data: () => ({
     drawerItems: [],
   }),
@@ -130,6 +133,12 @@ export default {
           path: "/asc/page/announcement",
         },
       ];
+    },
+
+    expandItem(state) {
+      if (this.miniState && state === true) {
+        this.$emit('update:miniState', false)
+      }
     }
   },
   mounted() {

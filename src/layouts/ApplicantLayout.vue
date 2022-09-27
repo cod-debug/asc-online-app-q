@@ -27,7 +27,9 @@
 
 
       <q-page-container style="background: #dfdfdf;">
-        <router-view />
+        <div style="padding: 2.5rem 1.2rem;">
+          <router-view />
+        </div>
       </q-page-container>
       <footer class="admin-footer text-white" >
         <p>
