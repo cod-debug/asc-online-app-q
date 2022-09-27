@@ -11,11 +11,12 @@
     <q-scroll-area class="fit text-red-14 text-bold">
       <q-list padding>
         <div class="text-center" v-if="!miniState">
-          <h6 class="q-ma-none text-dark">Applicant</h6>
+          <h6 class="q-ma-none text-dark">{{ userRole }}</h6>
           <hr class="nav-hr" />
         </div>
 
-        <ApplicantDrawer />
+        <AdminDrawer v-if="userRole === userRoles[0]" />
+        <ApplicantDrawer v-else-if="userRole === userRoles[1]" />
 
         <div>
           <hr class="nav-hr" />
@@ -50,17 +51,27 @@
 
 <script>
   import ApplicantDrawer from "../Applicant/DrawerItems";
+  import AdminDrawer from "../Admin/DrawerItems";
   import { ref } from 'vue'
 
   const miniState = ref(false)
 
   export default {
     components: {
-      ApplicantDrawer
+      ApplicantDrawer,
+      AdminDrawer
     },
     data: () => ({
       currentTime: "",
       miniState: miniState,
+
+      // Temporary Variable (Remove later)
+      userRoles: [
+        "Admin",
+        "Applicant",
+      ],
+      userRole: "Admin"
+
     }),
     watch: {
     },
