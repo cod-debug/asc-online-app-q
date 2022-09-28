@@ -6,7 +6,9 @@
         S1 APPLICATION -  INDIVIDUAL
       </div>
       <div class="buttons">
-        <q-btn icon="add" color="red" label="New Application" style="margin: 0 8px;" />
+        <q-btn icon="add" color="red-14" label="New Application" style="margin: 0 8px;"
+          @click="addNewApplication"
+        />
         <q-btn icon="autorenew" color="primary" label="" style="margin: 0 8px;" />
       </div>
     </q-card-section>
@@ -73,18 +75,108 @@
 
       <!-- <div class="q-pa-md"> -->
         <q-table
-          title="Treats"
+          title=""
           :data="data"
           :columns="columns"
           row-key="name"
-        />
+          style="border-radius: 0px;padding-top: 5px;"
+          :loading="false"
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props" style="margin-top:10px">
+              <q-th
+                v-for="col in props.cols"
+                :key="col.name"
+                :props="props"
+                class="custom-header-bg"
+              >
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td
+                v-for="(col,ind) in props.cols"
+                :key="col.name"
+                :props="props"
+                :style="`${ind === 0 ? 'background-color: lightblue;' : ''}`"
+                class="text-wrap-normal"
+                :class="getBackgroundColor(col.value, col.name)"
+              >
+                <q-badge size="30px"
+                  rounded
+                  :color="getBadgeColor(col.value)"
+                  :label="col.value"
+                  v-if="isVisible(ind, props.cols)"
+                  style="padding: 5px 10px;font-size: 9px;border-radius: 20px;width: 100%;justify-content: center;"
+                />
+                {{ ind === props.cols.length - 1 ? '' : col.value }}
+              </q-td>
+
+            </q-tr>
+          </template>
+        </q-table>
       <!-- </div> -->
+
+      <q-dialog
+        v-model="newApplicationDialog"
+      >
+        <q-card style="width: 450px">
+          <div style="padding: 5px 15px;">
+            <q-card-section>
+              <div class="text-h6">
+                New S1 Application
+              </div>
+            </q-card-section>
+
+            <q-separator class="mb-5" style="margin-bottom:15px;" />
+
+            <q-card-section class="q-pt-none">
+              <q-select outlined v-model="model" :options="options" label="Application Type" />
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              <div class="row">
+                <div class="col-sm-6">
+                  <q-checkbox size="sm" color="red-14" v-model="shape1" val="shape1" label="Multiple Application" />
+                </div>
+                <div class="col-sm-6">
+                  <q-checkbox size="sm" color="red-14" v-model="shape2" val="shape2" label="For Presentation" />
+                </div>
+                <div class="col-sm-12">
+                  <q-input outlined standout bottom-slots v-model="searchApplication" label="Number of Applications">
+                    <template v-slot:hint>
+                      2 - 20 only
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              <i>Note: This application type needs Request for Approval.</i>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              <div style="text-align: center;">
+                <q-btn icon="send" color="red-14" label="Proceed" style="margin: 0 8px;"/>
+                <q-btn icon="close" color="red-14" label="Cancel" style="margin: 0 8px;" v-close-popup />
+              </div>
+            </q-card-section>
+          </div>
+
+
+
+          <!-- <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="OK" v-close-popup />
+          </q-card-actions> -->
+        </q-card>
+      </q-dialog>
+
     </q-card-section>
 
-    <q-card-actions vertical>
-      <q-btn flat>Action 1</q-btn>
-      <q-btn flat>Action 2</q-btn>
-    </q-card-actions>
   </q-card>
 </template>
 
@@ -93,78 +185,140 @@ import { QSpinnerIos } from 'quasar'
 export default {
   data: () => ({
     searchApplication: "",
+    newApplicationDialog: false,
+    shape1: "",
+    shape2: "",
+    model: "",
+    options: [
+      "SPECIAL SCREENING",
+      "SPECIAL SCREENING AND CLEARING",
+      "REGULAR",
+      "BATCH"
+    ],
     tab: 'original',
     columns: [
       {
         name: "REFERENCE_CODE",
         label: "REFERENCE CODE",
         align: 'left',
-        field: row => row.name,
+        field: row => row.reference,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
       },
       {
         name: "TYPE_OF_APPLICATION",
         label: "TYPE OF APPLICATION",
         align: 'left',
-        field: row => row.name,
+        field: row => row.application_type,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
       {
         name: "COMPANY_NAME",
         label: "COMPANY NAME",
         align: 'left',
-        field: row => row.name,
+        field: row => row.company_name,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
       {
         name: "BRAND",
         label: "BRAND",
         align: 'left',
-        field: row => row.name,
+        field: row => row.brand,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
       {
         name: "TYPE_OF_MEDIUM",
         label: "TYPE OF MEDIUM",
         align: 'left',
-        field: row => row.name,
+        field: row => row.type_of_medium,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
       {
         name: "APPLICATION_STATUS",
         label: "APPLICATION STATUS",
         align: 'left',
-        field: row => row.name,
+        field: row => row.application_status,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
       {
         name: "PAYMENT_STATUS",
         label: "PAYMENT STATUS",
         align: 'left',
-        field: row => row.name,
+        field: row => row.payment_status,
         format: val => `${val}`,
-        sortable: true
+        sortable: false
       },
     ],
     data: [
       {
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        sodium: 87,
-        calcium: '14%',
-        iron: '1%'
+        reference: "50002N092722A",
+        application_type: "INDIVIDUAL - REGULAR",
+        company_name: "5 SECONDS ADVERTISING, INC.",
+        brand: "AVON",
+        type_of_medium: "OOH",
+        application_status: "ON PROCESS",
+        payment_status: "FOR PAYMENT",
+      },
+      {
+        reference: "",
+        application_type: "INDIVIDUAL - REGULAR",
+        company_name: "022 HEALTH AND BEAUTY, INC.",
+        brand: "AVON",
+        type_of_medium: "PRINT",
+        application_status: "S1 APPLICATION CANCELLED",
+        payment_status: "UNPAID",
       },
     ]
   }),
+
+  watch: {
+    tab() {
+      this.showTemporaryLoading();
+    }
+  },
+
+  methods: {
+    getBadgeColor(value = "") {
+      return value.toLowerCase() === 'unpaid' ? "red" : "amber-13";
+    },
+    isVisible(index, cols = []) {
+      return index === cols.length - 1;
+    },
+    getBackgroundColor(value = "", name = "") {
+      if (name === "APPLICATION_STATUS") {
+        if (value.toLowerCase() === 's1 application cancelled') {
+          return "bg-pink-3";
+        }
+      }
+      return ""
+    },
+
+    addNewApplication() {
+      this.newApplicationDialog = true;
+    },
+
+    showTemporaryLoading() {
+      this.$q.loading.show({
+        spinner: QSpinnerIos,
+        spinnerColor: 'white',
+        spinnerSize: 140,
+        // backgroundColor: 'purple',
+        message: 'LOADING...',
+        messageColor: 'white',
+      })
+
+      // hiding in 3s
+      this.timer = setTimeout(() => {
+        this.$q.loading.hide()
+        this.timer = void 0
+      }, 500)
+    }
+  },
 
   mounted() {
 
@@ -182,20 +336,7 @@ export default {
     //   this.$q.loading.hide()
     // }, 1000);
 
-    this.$q.loading.show({
-      spinner: QSpinnerIos,
-      spinnerColor: 'white',
-      spinnerSize: 140,
-      // backgroundColor: 'purple',
-      message: 'LOADING...',
-      messageColor: 'white',
-    })
-
-    // hiding in 3s
-    this.timer = setTimeout(() => {
-      this.$q.loading.hide()
-      this.timer = void 0
-    }, 1000)
+    this.showTemporaryLoading();
   }
 }
 </script>
@@ -275,5 +416,15 @@ export default {
   // height: 22px;
   // line-height: 22px;
   right: -30px;
+}
+
+.custom-header-bg {
+  background-color: hsla(0,0%,79.2%,.438);
+  white-space: inherit;
+  // display: flex;
+  // align-items: center;
+}
+.text-wrap-normal {
+  white-space: normal;
 }
 </style>
